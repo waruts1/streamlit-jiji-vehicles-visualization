@@ -45,7 +45,7 @@ def load_data():
     pageNo = 1
 
     # totalItems = getData['total_pages']
-    totalItems = 10
+    totalItems = 40
     perPageResults = []
 
     for a in range(1, totalItems):
@@ -119,7 +119,7 @@ vehicle_model = st.selectbox("Select a model:",["ALL"] + sorted(df2['model']))
 # year_to = st.sidebar.selectbox('Year To', range(1990, datetime.date.today().year + 1))
 
 
-st.write('Vehicle Model Selected Is :', vehicle_model)
+
 # df1=df[df['year'] > 2015]
 # df2=df1[df1['price'] > 6000000]
 # df2.groupby(['make']).size().reset_index().rename(columns={0:'count'}).sort_values(['count'], ascending=False)
@@ -133,6 +133,7 @@ else :
 # df_filter_to = df_filter_from[df_filter_from['year'] < year_to ]
 # st.dataframe(df_filter_to)
 # df_final = df2[df2['model']==vehicle_model]
+st.write('Vehicle Model Selected Is :', vehicle_model , 'Total Rows ', df_filter_model.shape[0])
 st.dataframe(df_filter_model)
 st.cache_data
 
