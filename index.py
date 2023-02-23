@@ -6,7 +6,7 @@ import streamlit as st
 import plotly.express as px
 import requests
 import re
-
+import datetime
 
 def load_data():
     cookies = {
@@ -45,7 +45,7 @@ def load_data():
     pageNo = 1
 
     # totalItems = getData['total_pages']
-    totalItems = 40
+    totalItems = 10
     perPageResults = []
 
     for a in range(1, totalItems):
@@ -111,38 +111,32 @@ st.write('Vehicle Make Selected Is :', vehicle_make)
 df_filter_make = df[df['make'] == vehicle_make]
 
 df2=df_filter_make.groupby(['model']).size().reset_index().rename(columns={0:'count'}).sort_values(['count'], ascending=False)
-vehicle_model = st.selectbox("Select a model:",["ALL"] + sorted(df2['model']))
-# df_final = pd.DataFrame()
-# df_final.append(vehicle_model)
 
-# year_from = st.sidebar.selectbox('Year From', range(1990, datetime.date.today().year + 1))
-# year_to = st.sidebar.selectbox('Year To', range(1990, datetime.date.today().year + 1))
+col1, col2, col3 = st.columns(3)
 
+with col1:
+   vehicle_model = st.selectbox("Select a model:",["ALL"] + sorted(df2['model']))
 
+with col2:
+    year_from = st.selectbox('Year From', range(1990, datetime.date.today().year + 1))
 
-# df1=df[df['year'] > 2015]
-# df2=df1[df1['price'] > 6000000]
-# df2.groupby(['make']).size().reset_index().rename(columns={0:'count'}).sort_values(['count'], ascending=False)
+with col3:
+    year_to = st.selectbox('Year To', range(1990, datetime.date.today().year + 1))
+
 
 df_filter_make = df[df["make"] == vehicle_make]
 if vehicle_model == 'ALL':
     df_filter_model = df[df["make"] == vehicle_make]
 else :
     df_filter_model = df_filter_make[df_filter_make['model'] == vehicle_model ]
-# df_filter_from = df_filter_model[df_filter_model['year'] > year_from ]
-# df_filter_to = df_filter_from[df_filter_from['year'] < year_to ]
-# st.dataframe(df_filter_to)
-# df_final = df2[df2['model']==vehicle_model]
+
 st.write('Vehicle Model Selected Is :', vehicle_model , 'Total Rows ', df_filter_model.shape[0])
-st.dataframe(df_filter_model)
-st.cache_data
 
-# chart_data = pd.DataFrame(
-#     np.random.randn(20, 3),
-#     columns=['a', 'b', 'c'])
+st.dataframe(df_filter_model[df_filter_model['year'].between(year_from,year_to)])
 
-# st.area_chart(chart_data)
 fig = px.line(df2, 
     x = "model", y = "count", title = vehicle_make)
 
 st.plotly_chart(fig)
+
+st.cache_data
