@@ -45,7 +45,7 @@ def load_data():
     pageNo = 1
 
     # totalItems = getData['total_pages']
-    totalItems = 30
+    totalItems = 35
     perPageResults = []
 
     for a in range(1, totalItems):
@@ -139,4 +139,18 @@ fig = px.line(df2,
 
 st.plotly_chart(fig)
 
+@st.cache_data
+def convert_df():
+   return df_filter_model[df_filter_model['year'].between(year_from,year_to)].to_csv(index=False).encode('utf-8')
+
+
+csv = convert_df(df)
+
+st.sidebar.download_button(
+   "Press to Download",
+   csv,
+   "file.csv",
+   "text/csv",
+   key='download-csv'
+)
 st.cache_data
