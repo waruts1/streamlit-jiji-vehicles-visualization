@@ -45,7 +45,7 @@ def load_data():
     pageNo = 1
 
     # totalItems = getData['total_pages']
-    totalItems = 10
+    totalItems = 30
     perPageResults = []
 
     for a in range(1, totalItems):
